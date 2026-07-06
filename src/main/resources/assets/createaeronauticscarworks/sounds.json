@@ -1,0 +1,22 @@
+{
+  "four_line_engine_idle": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_idle",
+    "sounds": [
+      {
+        "name": "createaeronauticscarworks:four_line_engine_idle",
+        "type": "file",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "four_line_engine_start": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_start",
+    "sounds": [
+      {
+        "name": "createaeronauticscarworks:four_line_engine_start",
+        "type": "file",
+        "attenuation_distance": 16
+      }
+    ]
+  }
+}
