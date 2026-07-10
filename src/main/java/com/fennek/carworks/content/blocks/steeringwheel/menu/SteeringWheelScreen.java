@@ -76,12 +76,14 @@ public class SteeringWheelScreen extends AbstractSimiContainerScreen<SteeringWhe
     private List<Component> addToTooltip(List<Component> list, int slot) {
         if (slot < 0 || slot >= 12)
             return list;
+        int keybind = (slot / 2) + 1;
+        if (keybind >= CACWControls.getControls().size())
+            return list;
         list.add(CreateLang.translateDirect("linked_controller.frequency_slot_" + ((slot % 2) + 1), CACWControls.getControls()
-                        .get((slot / 2)+1)
+                        .get(keybind)
                         .getTranslatedKeyMessage()
                         .getString())
                 .withStyle(ChatFormatting.GOLD));
         return list;
     }
 }
-

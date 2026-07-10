@@ -23,11 +23,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FourLineEngineBlock extends HorizontalKineticBlock implements IBE<FourLineEngineBlockEntity>, ProperWaterloggedBlock {
+public class FourLineEngineBlock extends HorizontalKineticBlock implements IBE<FourLineEngineBlockEntity>{
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     private static final VoxelShape SHAPE_NS = Shapes.or(
             Block.box(3.0D, 3.0D, 0.0D, 13.0D, 13.0D, 16.0D),
@@ -40,14 +38,11 @@ public class FourLineEngineBlock extends HorizontalKineticBlock implements IBE<F
 
     public FourLineEngineBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState()
-                .setValue(WATERLOGGED, false)
-                .setValue(POWERED, false));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.withWater(super.getStateForPlacement(context), context);
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -57,7 +52,6 @@ public class FourLineEngineBlock extends HorizontalKineticBlock implements IBE<F
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED, POWERED);
         super.createBlockStateDefinition(builder);
     }
 
@@ -87,28 +81,15 @@ public class FourLineEngineBlock extends HorizontalKineticBlock implements IBE<F
         return face == state.getValue(HORIZONTAL_FACING);
     }
 
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos otherPos, boolean moving) {
-        boolean powered = level.getBestNeighborSignal(pos) > 0;
-        if (state.getValue(POWERED) != powered) {
-            level.setBlock(pos, state.setValue(POWERED, powered), 2);
-        }
-
-        this.withBlockEntityDo(level, pos, (be) -> be.setAnalogSignal(level.getBestNeighborSignal(pos)));
-        super.neighborChanged(state, level, pos, block, otherPos, moving);
-    }
 
     @Override
-    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-        boolean powered = worldIn.getBestNeighborSignal(pos) > 0;
-        if (state.getValue(POWERED) != powered) {
-            worldIn.setBlock(pos, state.setValue(POWERED, powered), 2);
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            if (!world.isClientSide)
+            {
+                withBlockEntityDo(world, pos, be -> be.unlinkWheel());
+            }
+            super.onRemove(state, world, pos, newState, isMoving);
         }
-
-        if (state.hasBlockEntity()) {
-            this.withBlockEntityDo(worldIn, pos, (be) -> be.setAnalogSignal(worldIn.getBestNeighborSignal(pos)));
-        }
-
-        super.onPlace(state, worldIn, pos, oldState, isMoving);
     }
 }

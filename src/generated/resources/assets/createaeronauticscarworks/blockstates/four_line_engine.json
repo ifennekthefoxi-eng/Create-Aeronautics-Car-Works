@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "createaeronauticscarworks:block/four_line_engine/block",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "createaeronauticscarworks:block/four_line_engine/block",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "createaeronauticscarworks:block/four_line_engine/block"
+    },
+    "facing=west": {
+      "model": "createaeronauticscarworks:block/four_line_engine/block",
+      "y": 90
+    }
+  }
+}

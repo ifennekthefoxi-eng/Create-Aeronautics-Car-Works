@@ -16,6 +16,9 @@ import java.util.List;
 
 public class SteeringWheelInputPacket extends SteeringWheelpacketB {
 
+    boolean steerLeft = false;
+    boolean steerRight = false;
+
     public static final StreamCodec<ByteBuf, SteeringWheelInputPacket> STREAM_CODEC = StreamCodec.composite(
             CatnipStreamCodecBuilders.list(ByteBufCodecs.INT), p -> p.activatedButtons,
             ByteBufCodecs.BOOL, p -> p.press,
@@ -32,7 +35,7 @@ public class SteeringWheelInputPacket extends SteeringWheelpacketB {
         this.press = press;
     }
 
-    @Override
+    /*@Override
     protected void handleSteeringWheel(ServerPlayer player, SteeringWheelBlockEntity steeringWheel) {
         // Only the player currently seated/using this wheel may drive it
         if (!steeringWheel.isUsedBy(player))
@@ -45,6 +48,43 @@ public class SteeringWheelInputPacket extends SteeringWheelpacketB {
                 steeringWheel.getBlockPos(),
                 player.getUUID(),
                 activatedButtons.stream()
+                        .map(steeringWheel::getFrequencyForButton)
+                        .filter(java.util.Objects::nonNull)
+                        .toList(),
+                press
+        );
+    }*/
+
+    @Override
+    protected void handleSteeringWheel(ServerPlayer player, SteeringWheelBlockEntity steeringWheel) {
+        if (!steeringWheel.isUsedBy(player))
+            return;
+        if (player.isSpectator() && press)
+            return;
+
+        // Steering is a held-state action - update it regardless of press/release,
+        // and regardless of whatever else is in activatedButtons this packet.
+        if (activatedButtons.contains(SteeringWheelBlockEntity.SteeringLeftIndex))
+            steeringWheel.setSteeringButton(SteeringWheelBlockEntity.SteeringLeftIndex, press);
+
+        if (activatedButtons.contains(SteeringWheelBlockEntity.SteeringRightIndex))
+            steeringWheel.setSteeringButton(SteeringWheelBlockEntity.SteeringRightIndex, press);
+
+        // Ignition is a one-shot toggle, only fires on press, and has no frequency meaning
+        if (press && activatedButtons.contains(SteeringWheelBlockEntity.IGNITION_INDEX))
+            steeringWheel.toggleIgnition(player);
+
+        // Everything except ignition still reaches the frequency system -
+        // this includes LEFT/RIGHT, so they can still drive redstone links too
+        List<Integer> remaining = activatedButtons.stream()
+                .filter(i -> i != SteeringWheelBlockEntity.IGNITION_INDEX)
+                .toList();
+
+        SteeringWheelServerHandler.receivePressed(
+                player.level(),
+                steeringWheel.getBlockPos(),
+                player.getUUID(),
+                remaining.stream()
                         .map(steeringWheel::getFrequencyForButton)
                         .filter(java.util.Objects::nonNull)
                         .toList(),

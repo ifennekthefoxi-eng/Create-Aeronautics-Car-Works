@@ -1,0 +1,47 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "steering_dashboard",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "createaeronauticscarworks:block/steering_wheel",
+		"particle": "createaeronauticscarworks:block/steering_wheel"
+	},
+	"elements": [
+		{
+			"from": [7.55, -0.1214, 7.5277],
+			"to": [8.425, 0.1286, 8.4527],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [13.5, 2.5, 13.25, 2.625], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [13.375, 1.75, 13.25, 2], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [13.5, 2.875, 13.25, 2.75], "texture": "#0"},
+				"west": {"uv": [13.375, 2, 13.25, 2.25], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [4.5, 13, 4.25, 13.25], "texture": "#0"},
+				"down": {"uv": [4.75, 13, 4.5, 13.25], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.725, 0.0786, 6.4277],
+			"to": [8.25, 0.0786, 8.4277],
+			"rotation": {"angle": 0, "axis": "x", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0.125, 0, 0, 0], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 0.5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.125, 0, 0, 0], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 0.5], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [5.375, 13, 5.25, 13.5], "texture": "#0"},
+				"down": {"uv": [5.625, 13, 5.5, 13.5], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Marker",
+			"origin": [4.075, 13.81079, 12.87103],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

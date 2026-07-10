@@ -1,5 +1,6 @@
 package com.fennek.carworks;
 
+import com.fennek.carworks.utility.CACWLangRegister;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
@@ -35,8 +36,10 @@ public class CreateAeronauticsCarWorks {
         REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
         REGISTRATE.registerEventListeners(modEventBus);
 
+        CACWLangRegister.registerLang();
         CACWBocks.register();
         CACWBlockEntityTypes.register();
+        CACWItems.register();
         CACWSoundEvents.register(modEventBus);
         CACWMenuTypes.register();
         CACWPackets.register();

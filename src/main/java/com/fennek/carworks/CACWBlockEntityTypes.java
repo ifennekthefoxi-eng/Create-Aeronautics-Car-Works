@@ -3,6 +3,7 @@ package com.fennek.carworks;
 import com.fennek.carworks.content.blocks.engines.FourLineEngine.FourLineEngineBlockEntity;
 import com.fennek.carworks.content.blocks.engines.FourLineEngine.FourLineEngineRenderer;
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
+import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import static com.fennek.carworks.CreateAeronauticsCarWorks.REGISTRATE;
@@ -20,7 +21,7 @@ public class CACWBlockEntityTypes{
             .blockEntity("steering_wheel_tile_entity", SteeringWheelBlockEntity::new)
             //.visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), false)
             .validBlocks(CACWBocks.STEERING_WHEEL)
-            //.renderer(() -> FourLineEngineRenderer::new)
+            .renderer(() -> SteeringWheelRenderer::new)
             .register();
 
     public static void register() {

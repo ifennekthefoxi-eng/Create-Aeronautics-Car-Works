@@ -45,11 +45,11 @@ public class CACWclientEvents {
 
     @SubscribeEvent
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
-        event.register(CACWControls.CUSTOM_UP);
-        event.register(CACWControls.CUSTOM_DOWN);
-        event.register(CACWControls.CUSTOM_LEFT);
-        event.register(CACWControls.CUSTOM_RIGHT);
-        event.register(CACWControls.CUSTOM_JUMP);
+        event.register(CACWControls.Throttle);
+        event.register(CACWControls.Brakes);
+        event.register(CACWControls.Steer_Left);
+        event.register(CACWControls.Steer_Right);
+        event.register(CACWControls.Ignition);
         event.register(CACWControls.CUSTOM_SHIFT);
     }
 

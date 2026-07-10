@@ -13,7 +13,7 @@ public class CACWModEVents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        FourLineEngineBlockEntity.registerCapabilities(event);
+        //FourLineEngineBlockEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent

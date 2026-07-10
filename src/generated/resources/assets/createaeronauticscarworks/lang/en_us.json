@@ -1,0 +1,12 @@
+{
+  "block.createaeronauticscarworks.four_line_engine": "Four Line Engine",
+  "block.createaeronauticscarworks.steering_wheel": "Steering Wheel",
+  "category.carworks.controls": "Carworks KeyBindings",
+  "item.createaeronauticscarworks.linker_tool": "Linker Tool",
+  "key.carworks.brake": "Brake",
+  "key.carworks.ignition": "Ignition",
+  "key.carworks.left_turn": "Steer Left",
+  "key.carworks.right_turn": "Steer Right",
+  "key.carworks.shift": "Handbrake",
+  "key.carworks.throttle": "Throttle"
+}

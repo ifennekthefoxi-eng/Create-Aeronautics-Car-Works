@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "createaeronauticscarworks:block/steering_wheel/block",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "createaeronauticscarworks:block/steering_wheel/block",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "createaeronauticscarworks:block/steering_wheel/block"
+    },
+    "facing=west": {
+      "model": "createaeronauticscarworks:block/steering_wheel/block",
+      "y": 90
+    }
+  }
+}

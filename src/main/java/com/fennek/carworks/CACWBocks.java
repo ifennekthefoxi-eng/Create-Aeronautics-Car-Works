@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 
@@ -41,12 +42,30 @@ public class CACWBocks {
 
     public static final BlockEntry<SteeringWheelBlock> STEERING_WHEEL = REGISTRATE.block("steering_wheel", SteeringWheelBlock::new)
             .initialProperties(SharedProperties::softMetal)
-            .properties(p -> p.mapColor(MapColor.COLOR_YELLOW))
+            .properties(p -> p.mapColor(MapColor.COLOR_YELLOW).noOcclusion()) // Keeping noOcclusion here!
             .transform(pickaxeOnly())
-            .onRegister(movementBehaviour(new DieselEngineMovementBehaviour()))
+            .blockstate((c, p) ->
+                    p.getVariantBuilder(c.getEntry())
+                            .forAllStates(bs ->
+                                    ConfiguredModel.builder()
+                                            .modelFile(AssetLookup.partialBaseModel(c, p))
+                                            .rotationY((int) bs.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot())
+                                            .build()
+                            )
+            )
+            /*.item()
+            .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+            // FIX: Explicitly point the item model to the nested block model path
+            .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/steering_wheel/block")))
+            .build()
+            .register();*/
             .item()
+            .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
+            .model((c, p) -> p.blockItem(c, "/item"))
             .build()
             .register();
+
+
 
     public static void register() {
     }
