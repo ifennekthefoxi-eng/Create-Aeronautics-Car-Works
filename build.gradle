@@ -151,6 +151,11 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+// FIX: Instructs Gradle to safely handle duplicate asset generation passes
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {

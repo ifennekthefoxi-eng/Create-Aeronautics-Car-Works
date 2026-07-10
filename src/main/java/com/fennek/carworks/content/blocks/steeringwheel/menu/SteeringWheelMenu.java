@@ -3,26 +3,22 @@ package com.fennek.carworks.content.blocks.steeringwheel.menu;
 import com.fennek.carworks.CACWBocks;
 import com.fennek.carworks.CACWMenuTypes;
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
-import com.simibubi.create.content.logistics.BigItemStack;
-import com.simibubi.create.content.logistics.stockTicker.PackageOrder;
-import com.simibubi.create.content.logistics.stockTicker.PackageOrderWithCrafts;
 import com.simibubi.create.foundation.gui.menu.GhostItemMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SteeringWheelMenu extends GhostItemMenu<SteeringWheelBlockEntity> {
+
+    // 3 keybind, 2 slots each, has to equal SteeringWheelBlockEntity.frequencySlots.getSlots()
+    private static final int SLOT_COUNT = 6;
 
     public SteeringWheelMenu(MenuType<?> type, int id, Inventory inv, SteeringWheelBlockEntity contentHolder) {
         super(type, id, inv, contentHolder);
@@ -36,12 +32,13 @@ public class SteeringWheelMenu extends GhostItemMenu<SteeringWheelBlockEntity> {
         return new SteeringWheelMenu(CACWMenuTypes.STEERING_WHEEL.get(), id, inv, be);
     }
 
+    // this was using PackageOrder/encoded request before, which is a seperate store the input packet isnt reading
     @Override
     protected ItemStackHandler createGhostInventory() {
-        ItemStackHandler inventory = new ItemStackHandler(9);
-        List<BigItemStack> stacks = contentHolder.encodedRequest.stacks();
-        for (int i = 0; i < stacks.size(); i++)
-            inventory.setStackInSlot(i, stacks.get(i).stack.copyWithCount(1));
+        ItemStackHandler inventory = new ItemStackHandler(SLOT_COUNT);
+        ItemStackHandler source = contentHolder.frequencySlots;
+        for (int i = 0; i < SLOT_COUNT && i < source.getSlots(); i++)
+            inventory.setStackInSlot(i, source.getStackInSlot(i).copy());
         return inventory;
     }
 
@@ -66,30 +63,23 @@ public class SteeringWheelMenu extends GhostItemMenu<SteeringWheelBlockEntity> {
         int slotY = 34;
 
         addPlayerSlots(playerX, playerY);
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 0, slotX, slotY));
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 1, slotX, slotY + 18));
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 2, slotX + 24, slotY));
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 3, slotX + 24, slotY + 18));
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 4, slotX + 48, slotY));
-        addSlot(new SteeringWheelMenu.SorterProofSlot(ghostInventory, 5, slotX + 48, slotY + 18));
-
+        addSlot(new SorterProofSlot(ghostInventory, 0, slotX, slotY));           // S, freq 1
+        addSlot(new SorterProofSlot(ghostInventory, 1, slotX, slotY + 18));      // S, freq 2
+        addSlot(new SorterProofSlot(ghostInventory, 2, slotX + 24, slotY));      // A, freq 1
+        addSlot(new SorterProofSlot(ghostInventory, 3, slotX + 24, slotY + 18)); // A, freq 2
+        addSlot(new SorterProofSlot(ghostInventory, 4, slotX + 48, slotY));      // D, freq 1
+        addSlot(new SorterProofSlot(ghostInventory, 5, slotX + 48, slotY + 18)); // D, freq 2
     }
 
     @Override
     protected void saveData(SteeringWheelBlockEntity contentHolder) {
-        List<BigItemStack> stacks = contentHolder.encodedRequest.stacks();
-        ArrayList<BigItemStack> list = new ArrayList<>();
-        for (int i = 0; i < ghostInventory.getSlots(); i++) {
-            ItemStack stackInSlot = ghostInventory.getStackInSlot(i);
-            if (stackInSlot.isEmpty())
-                continue;
-            list.add(new BigItemStack(stackInSlot.copyWithCount(1), i < stacks.size() ? stacks.get(i).count : 1));
-        }
-
-        PackageOrderWithCrafts newRequest = new PackageOrderWithCrafts(new PackageOrder(list), contentHolder.encodedRequest.orderedCrafts());
-        if (!newRequest.orderedStacksMatchOrderedRecipes())
-            newRequest = PackageOrderWithCrafts.simple(newRequest.stacks());
-        contentHolder.encodedRequest = newRequest;
+        // commit the slots server-side
+        if (contentHolder.getLevel() == null || contentHolder.getLevel().isClientSide)
+            return;
+        ItemStackHandler target = contentHolder.frequencySlots;
+        for (int i = 0; i < SLOT_COUNT && i < target.getSlots(); i++)
+            target.setStackInSlot(i, ghostInventory.getStackInSlot(i).copy());
+        contentHolder.setChanged();
         contentHolder.sendData();
     }
 

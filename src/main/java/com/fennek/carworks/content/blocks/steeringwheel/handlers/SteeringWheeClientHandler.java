@@ -119,7 +119,7 @@ public class SteeringWheeClientHandler {
             return;
         }
 
-        if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_ESCAPE)) {
+        if (InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_ESCAPE) || InputConstants.isKeyDown(mc.getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT)) {
             MODE = Mode.IDLE;
             onReset();
             return;
@@ -148,9 +148,14 @@ public class SteeringWheeClientHandler {
                 AllSoundEvents.CONTROLLER_CLICK.playAt(player.level(), player.blockPosition(), 1f, .75f, true);
             }
 
+            // was: if (packetCooldown == 0 && !pressedKeys.isEmpty()) { ... }
             if (packetCooldown == 0 && !pressedKeys.isEmpty()) {
-                CatnipServices.NETWORK.sendToServer(new SteeringWheelInputPacket(pressedKeys, true, steeringWheelPos));
-                packetCooldown = PACKET_RATE;
+                Collection<Integer> resendKeys = new HashSet<>(pressedKeys);
+                resendKeys.remove(CACWControls.getControls().indexOf(CACWControls.Ignition));
+                if (!resendKeys.isEmpty()) {
+                    CatnipServices.NETWORK.sendToServer(new SteeringWheelInputPacket(resendKeys, true, steeringWheelPos));
+                    packetCooldown = PACKET_RATE;
+                }
             }
         }
 
