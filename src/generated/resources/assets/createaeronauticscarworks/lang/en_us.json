@@ -1,5 +1,6 @@
 {
   "block.createaeronauticscarworks.four_line_engine": "Four Line Engine",
+  "block.createaeronauticscarworks.smart_wheel_mount": "Smart Wheel Mount",
   "block.createaeronauticscarworks.steering_wheel": "Steering Wheel",
   "category.carworks.controls": "Carworks KeyBindings",
   "item.createaeronauticscarworks.linker_tool": "Linker Tool",
@@ -15,5 +16,6 @@
   "simulated.simulated_section.carworks_tab": "carworks",
   "tooltip.carworks.four_line_engine": "CACW IS ON BETA Four Line Engine may change",
   "tooltip.carworks.linker_tool": "CACW IS ON BETA Linker Tool may change",
+  "tooltip.carworks.smart_wheel_mount": "CACW IS ON BETA Smart Wheel Mount may change",
   "tooltip.carworks.steering_wheel": "CACW IS ON BETA Steering Wheel may change"
 }

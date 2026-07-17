@@ -78,6 +78,8 @@ dependencies {
     implementation("dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${simulated_version}")
     implementation("dev.ryanhcode.offroad:offroad-neoforge-${minecraft_version}:${simulated_version}")
 
+    annotationProcessor "io.github.llamalad7:mixinextras-neoforge:0.4.1"
+    implementation "io.github.llamalad7:mixinextras-neoforge:0.4.1"
 }
 
 base {
@@ -90,6 +92,10 @@ neoForge {
     version = project.neo_version
 
     accessTransformers {
+        // This applies the AT to your local workspace so you can use the private fields
+        from(file("src/main/resources/META-INF/accesstransformer.cfg"))
+
+        // You can optionally keep publish() if you plan to upload this mod to Maven for others to use as an API later
         publish(file("src/main/resources/META-INF/accesstransformer.cfg"))
     }
 

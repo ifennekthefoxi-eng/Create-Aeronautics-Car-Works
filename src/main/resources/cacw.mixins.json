@@ -1,10 +1,10 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "com.fennek.carworks.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "compatmixins.offroad.WheelMountBlockEntityMixin",
-    "compatmixins.offroad.WheelMountBlockMixin"
+    "compat.offroad.MixinWheelMountBlockEntity"
   ],
   "client": [
     "client.SteeringWheelClientMixin"

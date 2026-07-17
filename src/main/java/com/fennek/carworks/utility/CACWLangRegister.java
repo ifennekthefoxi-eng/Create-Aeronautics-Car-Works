@@ -26,6 +26,7 @@ public class CACWLangRegister {
         //items
         REGISTRATE.addRawLang("tooltip.carworks.four_line_engine", "CACW IS ON BETA Four Line Engine may change");
         REGISTRATE.addRawLang("tooltip.carworks.steering_wheel", "CACW IS ON BETA Steering Wheel may change");
+        REGISTRATE.addRawLang("tooltip.carworks.smart_wheel_mount", "CACW IS ON BETA Smart Wheel Mount may change");
         REGISTRATE.addRawLang("tooltip.carworks.linker_tool", "CACW IS ON BETA Linker Tool may change");
     }
 }

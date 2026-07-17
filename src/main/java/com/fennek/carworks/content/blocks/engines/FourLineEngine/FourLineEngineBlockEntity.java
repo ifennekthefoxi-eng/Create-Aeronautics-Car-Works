@@ -203,6 +203,9 @@ public class FourLineEngineBlockEntity extends GeneratingKineticBlockEntity impl
         tooltip.add(Component.literal("    Engine Status: ")
                 .withStyle(ChatFormatting.WHITE));
 
+        tooltip.add(Component.literal("    Fuel Type: gasoline")
+                .withStyle(ChatFormatting.GOLD));
+
         /*tooltip.add(Component.literal("    Current Gear: ")
                 .withStyle(ChatFormatting.GRAY)
                 .append(Component.literal(GearsDisplay[this.CurrentGear - 1])

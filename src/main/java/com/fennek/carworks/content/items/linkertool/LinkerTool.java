@@ -1,9 +1,6 @@
-package com.fennek.carworks.content.items;
+package com.fennek.carworks.content.items.linkertool;
 
-import com.fennek.carworks.content.items.linkertool.LinkingBehaviours;
-import com.fennek.carworks.content.items.linkertool.LinkingBehvioursInerface;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +31,7 @@ public class LinkerTool extends Item {
 
     public LinkerTool(Properties properties) {
         super(properties);
-        linkingBehaviour = LinkingBehaviours.LINK_ENGINE_TO_STEERING_WHEEL;
+        linkingBehaviour = LinkingBehaviours.NONE;
     }
 
     @Override
@@ -69,23 +66,23 @@ public class LinkerTool extends Item {
         if (blockEntity == null) {
             // Not a linkable block - treat this as the "cycle behaviour" gesture
             changeBehaviour();
-            player.sendSystemMessage(Component.literal("Linking behaviour: " + linkingBehaviour.getDisplayName()));
+            player.displayClientMessage(Component.literal("Linking behaviour: " + linkingBehaviour.getDisplayName()),true);
             return InteractionResult.SUCCESS;
         }
 
         LinkingBehvioursInerface behaviour = getSession(player);
 
         if (behaviour == null) {
-            player.sendSystemMessage(Component.literal("no linking behaviour selected"));
+            player.displayClientMessage(Component.literal("no linking behaviour selected"),true);
             return InteractionResult.SUCCESS;
         }
 
         if (!behaviour.checkFirst()) {
             behaviour.SelectFirst(pos, level);
             if (behaviour.checkFirst()) {
-                player.sendSystemMessage(Component.literal("First block selected"));
+                player.displayClientMessage(Component.literal("First block selected"),true);
             } else {
-                player.sendSystemMessage(Component.literal("This block can't be used as the first link target"));
+                player.displayClientMessage(Component.literal("This block can't be used as the first link target"),true);
             }
             return InteractionResult.SUCCESS;
         }
@@ -94,10 +91,10 @@ public class LinkerTool extends Item {
             behaviour.SelectSecond(pos, level);
             if (behaviour.checkSecond()) {
                 behaviour.link(level);
-                player.sendSystemMessage(Component.literal("Linked!"));
+                player.displayClientMessage(Component.literal("Linked!"),true);
                 sessions.remove(player.getUUID());
             } else {
-                player.sendSystemMessage(Component.literal("This block can't be used as the second link target"));
+                player.displayClientMessage(Component.literal("This block can't be used as the second link target"),true);
             }
         }
 

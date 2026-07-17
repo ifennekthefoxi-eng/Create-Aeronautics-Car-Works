@@ -13,8 +13,8 @@ public enum LinkingBehaviours {
 
     LINK_ENGINE_TO_STEERING_WHEEL(LinkEngineToSteeringWheel::new, "engine -> steering wheel"),
     LINK_GAS_TANK_TO_ENGINE(LinkTankToEngine::new, "gas tank -> engine"),
-    LINK_STEER_WHEEL_TO_STEERING_WHEEL(LinkSteeringWheels::new, "steering wheel -> steering wheel"),
-    LINK_BRAKE_WHEEL_TO_STEERING_WHEEL(LinkBrakeWheels::new, "brake wheel -> steering wheel"),;
+    LINK_STEER_WHEEL_TO_STEERING_WHEEL(LinkSteeringWheels::new, "smart mount (steer) -> steering wheel"),
+    LINK_BRAKE_WHEEL_TO_STEERING_WHEEL(LinkBrakeWheels::new, "smart mount (brake) -> steering wheel"),;
 
     private final Supplier<LinkingBehvioursInerface> factory;
     private final String Name;

@@ -1,5 +1,6 @@
 package com.fennek.carworks.content.items.linkertool.linkingbehaviours;
 
+import com.fennek.carworks.content.blocks.SmartWheelMount.SmartWheelMountBlockEntity;
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
 import com.fennek.carworks.content.items.linkertool.LinkingBehvioursInerface;
 import dev.ryanhcode.offroad.content.blocks.wheel_mount.WheelMountBlockEntity;
@@ -22,7 +23,7 @@ public class LinkSteeringWheels  implements LinkingBehvioursInerface {
 
     @Override
     public void SelectFirst(BlockPos Pos, Level level) {
-        if (level.getBlockEntity(Pos) instanceof WheelMountBlockEntity) {
+        if (level.getBlockEntity(Pos) instanceof SmartWheelMountBlockEntity) {
             SteerWheelPos = Pos;
         }
     }

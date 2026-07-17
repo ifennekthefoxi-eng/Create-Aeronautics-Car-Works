@@ -1,6 +1,6 @@
 package com.fennek.carworks.content.blocks.steeringwheel;
 
-import com.fennek.carworks.compat.offroad.IWheelMountEntityOverride;
+import com.fennek.carworks.content.blocks.SmartWheelMount.SmartWheelMountBlockEntity;
 import com.fennek.carworks.content.blocks.engines.FourLineEngine.FourLineEngineBlockEntity;
 import com.fennek.carworks.content.blocks.steeringwheel.handlers.SteeringWheeClientHandler;
 import com.fennek.carworks.content.blocks.steeringwheel.menu.SteeringWheelMenu;
@@ -155,7 +155,7 @@ public class SteeringWheelBlockEntity extends SmartBlockEntity implements MenuPr
     public boolean addToGoggleTooltip(final List<Component> tooltip, final boolean isPlayerSneaking) {
         if (this.subLevelReference.get() != null) {
             SimLang.number(Math.abs(this.getAdjustedVelocity()))
-                    .text(" m/s").forGoggles(tooltip);
+                    .text(" Blocks/s").forGoggles(tooltip);
         }
 
         return IHaveGoggleInformation.super.addToGoggleTooltip(tooltip, isPlayerSneaking);
@@ -442,9 +442,8 @@ public class SteeringWheelBlockEntity extends SmartBlockEntity implements MenuPr
     public void linkSteerWheels(BlockPos wheelPos,Player player) {
         if(!this.steerWheels.contains(wheelPos)) {
             this.steerWheels.add(wheelPos);
-            if (this.level.getBlockEntity(wheelPos) instanceof WheelMountBlockEntity wheel
-                    && wheel instanceof IWheelMountEntityOverride override) {
-                override.linkToSteeringWheel(this.worldPosition,player);
+            if (this.level.getBlockEntity(wheelPos) instanceof SmartWheelMountBlockEntity wheel){
+                wheel.linkToSteeringWheel(this.worldPosition,player);
             }
             if(player!= null) {player.sendSystemMessage(Component.literal("Successfully linked wheel mount to steer wheel!"));}
         }
@@ -459,9 +458,8 @@ public class SteeringWheelBlockEntity extends SmartBlockEntity implements MenuPr
     public void linkBrakeWheels(BlockPos wheelPos,Player player) {
         if(!this.brakeWheels.contains(wheelPos)){
             this.brakeWheels.add(wheelPos);
-            if (this.level.getBlockEntity(wheelPos) instanceof WheelMountBlockEntity wheel
-                    && wheel instanceof IWheelMountEntityOverride override) {
-                override.linkToSteeringWheel(this.worldPosition,player);
+            if (this.level.getBlockEntity(wheelPos) instanceof SmartWheelMountBlockEntity wheel){
+                wheel.linkToSteeringWheel(this.worldPosition,player);
             }
             if(player!= null) {player.sendSystemMessage(Component.literal("Successfully linked wheel mount to brake wheel!"));}
         }
@@ -494,25 +492,21 @@ public class SteeringWheelBlockEntity extends SmartBlockEntity implements MenuPr
     private void pushSteeringAndBrakeOverrides() {
         if (this.level == null) return;
 
-        // SteeringDirection is -1..1 in your existing code; scale to a 0-15 signal split
-        // left/right the same way real redstone comparators would.
-        int leftSignal = SteeringDirection < 0 ? Math.round(SteeringDirection * 15f) : 0;
-        int rightSignal = SteeringDirection > 0 ? Math.round(-SteeringDirection * 15f) : 0;
+        int steerSignal = (int) (SteeringDirection * 15);
 
         for (BlockPos pos : steerWheels) {
-            if (this.level.getBlockEntity(pos) instanceof WheelMountBlockEntity wheel
-                    && wheel instanceof IWheelMountEntityOverride override) {
-                override.cacw$setSteerOverride(leftSignal, rightSignal);
+            if (this.level.getBlockEntity(pos) instanceof SmartWheelMountBlockEntity wheel) {
+                wheel.turn(steerSignal);
             }
         }
 
-        // Wire this up to whatever your actual brake input ends up being (button/keybind).
-        int brakeSignal = BrakeInput;
+        // FIX 2: Evaluate the true/false state and pass it straight to the wheels
+        boolean brakeSignal = BrakeInput > 0;
 
         for (BlockPos pos : brakeWheels) {
-            if (this.level.getBlockEntity(pos) instanceof WheelMountBlockEntity wheel
-                    && wheel instanceof IWheelMountEntityOverride override) {
-                override.cacw$setBrakeOverride(brakeSignal);
+            if (this.level.getBlockEntity(pos) instanceof SmartWheelMountBlockEntity wheel) {
+                // By calling setBraking, we actively apply OR release brakes every tick
+                wheel.setBraking(brakeSignal);
             }
         }
     }

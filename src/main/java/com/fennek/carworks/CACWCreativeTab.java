@@ -16,6 +16,7 @@ public class CACWCreativeTab {
 
         registerSectionItem(CARWORS_TAB, "four_line_engine", () -> CACWBocks.FOUR_LINE_ENGINE.get().asItem());
         registerSectionItem(CARWORS_TAB, "steering_wheel", () -> CACWBocks.STEERING_WHEEL.get().asItem());
+        registerSectionItem(CARWORS_TAB, "smart_wheel_mount", () -> CACWBocks.SMART_WHEEL_MOUNT.get().asItem());
         registerSectionItem(CARWORS_TAB, "linker_tool", () -> CACWItems.LINKER_TOOL.get().asItem());
 
         sectionsInitialized = true;

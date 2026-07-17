@@ -1,5 +1,6 @@
 {
   "block.createaeronauticscarworks.four_line_engine": "ǝuıbuƎ ǝuıꞀ ɹnoℲ",
+  "block.createaeronauticscarworks.smart_wheel_mount": "ʇunoW ןǝǝɥM ʇɹɐɯS",
   "block.createaeronauticscarworks.steering_wheel": "ןǝǝɥM buıɹǝǝʇS",
   "category.carworks.controls": "sbuıpuıᗺʎǝʞ sʞɹoʍɹɐƆ",
   "item.createaeronauticscarworks.linker_tool": "ןoo⟘ ɹǝʞuıꞀ",
@@ -15,5 +16,6 @@
   "simulated.simulated_section.carworks_tab": "sʞɹoʍɹɐɔ",
   "tooltip.carworks.four_line_engine": "ǝbuɐɥɔ ʎɐɯ ǝuıbuƎ ǝuıꞀ ɹnoℲ Ɐ⟘Ǝᗺ NO SI MƆⱯƆ",
   "tooltip.carworks.linker_tool": "ǝbuɐɥɔ ʎɐɯ ןoo⟘ ɹǝʞuıꞀ Ɐ⟘Ǝᗺ NO SI MƆⱯƆ",
+  "tooltip.carworks.smart_wheel_mount": "ǝbuɐɥɔ ʎɐɯ ʇunoW ןǝǝɥM ʇɹɐɯS Ɐ⟘Ǝᗺ NO SI MƆⱯƆ",
   "tooltip.carworks.steering_wheel": "ǝbuɐɥɔ ʎɐɯ ןǝǝɥM buıɹǝǝʇS Ɐ⟘Ǝᗺ NO SI MƆⱯƆ"
 }

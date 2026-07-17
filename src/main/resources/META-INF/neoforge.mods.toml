@@ -1,6 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 license = "MIT"
+logoFile="assets/createaeronauticscarworks/icon.png"
 
 [[mods]]
 modId = "createaeronauticscarworks"
@@ -8,6 +9,7 @@ version = "0.1.0-BETA"
 displayName = "Create Aeronautics: Car Works"
 authors = '''fennek (mod lead),
 nova (main artist),
+Arthur (gui aniamtion and logo),
 bennet (code contributor)
 '''
 description = '''An addon mod that focus on make general vehicle creation easier
