@@ -14,7 +14,10 @@ public class CACWControls {
     public static final KeyMapping Steer_Left;
     public static final KeyMapping Steer_Right;
     public static final KeyMapping Ignition;
-    public static final KeyMapping CUSTOM_SHIFT;
+    public static final KeyMapping HandBrake;
+    public static final KeyMapping GearUp;
+    public static final KeyMapping GearDown;
+    public static final KeyMapping Horn;
     private static List<KeyMapping> standardControls;
 
     public CACWControls() {
@@ -28,7 +31,10 @@ public class CACWControls {
             standardControls.add(Steer_Left);
             standardControls.add(Steer_Right);
             standardControls.add(Ignition);
-            standardControls.add(CUSTOM_SHIFT);
+            standardControls.add(HandBrake);
+            standardControls.add(GearUp);
+            standardControls.add(GearDown);
+            standardControls.add(Horn);
         }
 
         return standardControls;
@@ -49,6 +55,9 @@ public class CACWControls {
         Steer_Left = new KeyMapping("key.carworks.left_turn", Type.KEYSYM, GLFW.GLFW_KEY_A, "category.carworks.controls");
         Steer_Right = new KeyMapping("key.carworks.right_turn", Type.KEYSYM, GLFW.GLFW_KEY_D, "category.carworks.controls");
         Ignition = new KeyMapping("key.carworks.ignition", Type.KEYSYM, GLFW.GLFW_KEY_R, "category.carworks.controls");
-        CUSTOM_SHIFT = new KeyMapping("key.carworks.horn", Type.KEYSYM, GLFW.GLFW_KEY_H, "category.carworks.controls");
+        HandBrake = new KeyMapping("key.carworks.handbrake", Type.KEYSYM, GLFW.GLFW_KEY_SPACE, "category.carworks.controls");
+        GearUp = new KeyMapping("key.carworks.gear_up", Type.KEYSYM, GLFW.GLFW_KEY_LEFT_SHIFT, "category.carworks.controls");
+        GearDown = new KeyMapping("key.carworks.gear_down", Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, "category.carworks.controls");
+        Horn = new KeyMapping("key.carworks.horn", Type.KEYSYM, GLFW.GLFW_KEY_H, "category.carworks.controls");
     }
 }

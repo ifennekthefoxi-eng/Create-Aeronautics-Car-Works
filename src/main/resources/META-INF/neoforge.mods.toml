@@ -1,13 +1,22 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
-license = "All Rights Reserved"
+license = "MIT"
 
 [[mods]]
 modId = "createaeronauticscarworks"
-version = "1.0.0"
+version = "0.1.0-BETA"
 displayName = "Create Aeronautics: Car Works"
-authors = "fennek"
-description = '''An addon mod that focus on make general vehicle creation easier'''
+authors = '''fennek (mod lead),
+nova (main artist),
+bennet (code contributor)
+'''
+description = '''An addon mod that focus on make general vehicle creation easier
+
+special thanks to all the people that saw carwors born as just a block copying
+create diesel generatos small generator to what it is rn love yall xoxo fennek'''
+
+[[mixins]]
+config='cacw.mixins.json'
 
 [[dependencies.createaeronauticscarworks]]
 modId = "neoforge"
@@ -53,6 +62,13 @@ side = "BOTH"
 
 [[dependencies.createaeronauticscarworks]]
 modId="simulated"
+type="required"
+versionRange="[1.1.0,3.0.0)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.createaeronauticscarworks]]
+modId="offroad"
 type="required"
 versionRange="[1.1.0,3.0.0)"
 ordering="AFTER"

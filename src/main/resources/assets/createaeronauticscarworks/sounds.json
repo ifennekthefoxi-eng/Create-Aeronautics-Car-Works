@@ -1,19 +1,49 @@
 {
-  "four_line_engine_idle": {
-    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_idle",
+  "four_line_engine_start": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_start",
     "sounds": [
       {
-        "name": "createaeronauticscarworks:four_line_engine_idle",
+        "name": "createaeronauticscarworks:four_line_engine/startup",
         "type": "file",
         "attenuation_distance": 16
       }
     ]
   },
-  "four_line_engine_start": {
-    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_start",
+  "four_line_engine_idle": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_idle",
     "sounds": [
       {
-        "name": "createaeronauticscarworks:four_line_engine_start",
+        "name": "createaeronauticscarworks:four_line_engine/idle",
+        "type": "file",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "four_line_engine_low": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_low",
+    "sounds": [
+      {
+        "name": "createaeronauticscarworks:four_line_engine/low_on",
+        "type": "file",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "four_line_engine_mid": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_mid",
+    "sounds": [
+      {
+        "name": "createaeronauticscarworks:four_line_engine/med_on",
+        "type": "file",
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "four_line_engine_high": {
+    "subtitle": "sounds.createaeronauticscarworks.four_line_engine_high",
+    "sounds": [
+      {
+        "name": "createaeronauticscarworks:four_line_engine/high_on",
         "type": "file",
         "attenuation_distance": 16
       }

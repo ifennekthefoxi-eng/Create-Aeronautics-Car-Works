@@ -1,6 +1,7 @@
 package com.fennek.carworks.content.blocks.steeringwheel.packets;
 
 import com.fennek.carworks.CACWPackets; // your packet registry - see note at bottom
+import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlock;
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
 import com.fennek.carworks.content.blocks.steeringwheel.handlers.SteeringWheelServerHandler;
 import io.netty.buffer.ByteBuf;
@@ -62,6 +63,16 @@ public class SteeringWheelInputPacket extends SteeringWheelpacketB {
         if (player.isSpectator() && press)
             return;
 
+        // Throttle is a held-state action too, same treatment as steering/brake below.
+        if (activatedButtons.contains(SteeringWheelBlockEntity.ThrottleIndex))
+            steeringWheel.setThrottleInput(press);
+
+        if (press && activatedButtons.contains(SteeringWheelBlockEntity.GearUpIndex))
+            steeringWheel.GearUp();
+
+        if (press && activatedButtons.contains(SteeringWheelBlockEntity.GearDownIndex))
+            steeringWheel.GearDown();
+
         // Steering is a held-state action - update it regardless of press/release,
         // and regardless of whatever else is in activatedButtons this packet.
         if (activatedButtons.contains(SteeringWheelBlockEntity.SteeringLeftIndex))
@@ -69,6 +80,9 @@ public class SteeringWheelInputPacket extends SteeringWheelpacketB {
 
         if (activatedButtons.contains(SteeringWheelBlockEntity.SteeringRightIndex))
             steeringWheel.setSteeringButton(SteeringWheelBlockEntity.SteeringRightIndex, press);
+
+        if(activatedButtons.contains(SteeringWheelBlockEntity.brakeIndex))
+            steeringWheel.setBrakeInput(press);
 
         // Ignition is a one-shot toggle, only fires on press, and has no frequency meaning
         if (press && activatedButtons.contains(SteeringWheelBlockEntity.IGNITION_INDEX))

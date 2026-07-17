@@ -9,7 +9,7 @@ public class FourLineEngineSound extends AbstractTickableSoundInstance {
 
     private final FourLineEngineBlockEntity engine;
 
-    public FourLineEngineSound(FourLineEngineBlockEntity engine, boolean isStartup) {
+    public FourLineEngineSound(FourLineEngineBlockEntity engine, boolean isStartup, float volume) {
         super(
                 isStartup ? CACWSoundEvents.FOURLINE_START.get() : CACWSoundEvents.FOURLINE_IDLE.get(),
                 SoundSource.BLOCKS,
@@ -18,7 +18,7 @@ public class FourLineEngineSound extends AbstractTickableSoundInstance {
         this.engine = engine;
         this.looping = !isStartup;
         this.delay = 0;
-        this.volume = 1.0F;
+        this.volume = volume;//1.0F;
         this.pitch = 1.0F;
         this.attenuation = Attenuation.LINEAR;
         this.relative = false;

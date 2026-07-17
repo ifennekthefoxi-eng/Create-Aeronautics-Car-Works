@@ -10,10 +10,18 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
+import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+
+import java.util.List;
 
 import static com.fennek.carworks.CreateAeronauticsCarWorks.REGISTRATE;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -34,7 +42,13 @@ public class CACWBocks {
                             )
             )
             .onRegister(movementBehaviour(new DieselEngineMovementBehaviour()))
-            .item()
+            .item((block, properties) -> new BlockItem(block, properties) {
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                    tooltipComponents.add(Component.translatable("tooltip.carworks.four_line_engine").withStyle(ChatFormatting.RED));
+                    super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+                }
+            })
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
             .model((c, p) -> p.blockItem(c, "/item"))
             .build()
@@ -59,7 +73,13 @@ public class CACWBocks {
             .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/steering_wheel/block")))
             .build()
             .register();*/
-            .item()
+            .item((block, properties) -> new BlockItem(block, properties) {
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                    tooltipComponents.add(Component.translatable("tooltip.carworks.steering_wheel").withStyle(ChatFormatting.RED));
+                    super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+                }
+            })
             .tag(AllTags.AllItemTags.CONTRAPTION_CONTROLLED.tag)
             .model((c, p) -> p.blockItem(c, "/item"))
             .build()

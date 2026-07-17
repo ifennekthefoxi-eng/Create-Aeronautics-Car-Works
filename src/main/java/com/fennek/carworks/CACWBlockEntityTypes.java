@@ -5,6 +5,8 @@ import com.fennek.carworks.content.blocks.engines.FourLineEngine.FourLineEngineR
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
 import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import dev.ryanhcode.offroad.Offroad;
+import dev.simulated_team.simulated.registrate.SimulatedRegistrate;
 
 import static com.fennek.carworks.CreateAeronauticsCarWorks.REGISTRATE;
 

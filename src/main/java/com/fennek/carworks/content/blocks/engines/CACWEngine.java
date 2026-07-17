@@ -1,9 +1,16 @@
 package com.fennek.carworks.content.blocks.engines;
 
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public interface CACWEngine {
-    //FluidTank getTank();
+    IFluidHandler getTank();
 
-    //int getAnalogSignal();
+    boolean isEngineRunning();
+
+    float getCurrentRPM();
+
+    // Added for speed-based audio pitch modulation
+    float getCurrentSpeed();
+
+    float getMaxSpeed();
 }

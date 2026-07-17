@@ -4,9 +4,16 @@
   "category.carworks.controls": "Carworks KeyBindings",
   "item.createaeronauticscarworks.linker_tool": "Linker Tool",
   "key.carworks.brake": "Brake",
+  "key.carworks.gear_down": "Gar Down",
+  "key.carworks.gear_up": "Gear Up",
+  "key.carworks.handbrake": "Hand Brake",
+  "key.carworks.horn": "Horn",
   "key.carworks.ignition": "Ignition",
   "key.carworks.left_turn": "Steer Left",
   "key.carworks.right_turn": "Steer Right",
-  "key.carworks.shift": "Handbrake",
-  "key.carworks.throttle": "Throttle"
+  "key.carworks.throttle": "Throttle",
+  "simulated.simulated_section.carworks_tab": "carworks",
+  "tooltip.carworks.four_line_engine": "CACW IS ON BETA Four Line Engine may change",
+  "tooltip.carworks.linker_tool": "CACW IS ON BETA Linker Tool may change",
+  "tooltip.carworks.steering_wheel": "CACW IS ON BETA Steering Wheel may change"
 }

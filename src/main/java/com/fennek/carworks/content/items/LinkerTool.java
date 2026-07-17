@@ -1,11 +1,10 @@
 package com.fennek.carworks.content.items;
 
-import com.fennek.carworks.content.blocks.engines.FourLineEngine.FourLineEngineBlockEntity;
-import com.fennek.carworks.content.blocks.steeringwheel.SteeringWheelBlockEntity;
-import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
+import com.fennek.carworks.content.items.linkertool.LinkingBehaviours;
+import com.fennek.carworks.content.items.linkertool.LinkingBehvioursInerface;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,17 +12,35 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-//@EventBusSubscriber
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 public class LinkerTool extends Item {
+
+    private LinkingBehaviours linkingBehaviour;
+
+    // Per-player in-progress linking sessions. The Item instance is a singleton
+    // shared by everyone holding it, so this state can't live on the Item's
+    // own fields - it has to be keyed per player.
+    private final Map<UUID, LinkingBehvioursInerface> sessions = new HashMap<>();
 
     public LinkerTool(Properties properties) {
         super(properties);
+        linkingBehaviour = LinkingBehaviours.LINK_ENGINE_TO_STEERING_WHEEL;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("tooltip.carworks.linker_tool").withStyle(ChatFormatting.RED));
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
     @Override
@@ -31,7 +48,6 @@ public class LinkerTool extends Item {
         return false;
     }
 
-    // 1. Triggered when clicking a BLOCK
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
@@ -43,7 +59,6 @@ public class LinkerTool extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        // Shift-Right-Click on a block to reset
         if (player.isShiftKeyDown()) {
             resetTool(stack, player);
             return InteractionResult.SUCCESS;
@@ -51,142 +66,85 @@ public class LinkerTool extends Item {
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
-
-        // 2. Select Steering Wheel
-        if (blockEntity instanceof SteeringWheelBlockEntity) {
-            // NEW 1.21+ WAY: Get custom data, copy it, modify it, and set it back
-            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-            CompoundTag tag = customData.copyTag();
-
-            tag.putInt("Wheel_X", pos.getX());
-            tag.putInt("Wheel_Y", pos.getY());
-            tag.putInt("Wheel_Z", pos.getZ());
-
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-
-            player.sendSystemMessage(Component.literal("Selected a steering wheel"));
+        if (blockEntity == null) {
+            // Not a linkable block - treat this as the "cycle behaviour" gesture
+            changeBehaviour();
+            player.sendSystemMessage(Component.literal("Linking behaviour: " + linkingBehaviour.getDisplayName()));
             return InteractionResult.SUCCESS;
         }
-        else if (blockEntity instanceof FluidTankBlockEntity) {
-            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-            CompoundTag tag = customData.copyTag();
 
-            tag.putInt("Tank_X", pos.getX());
-            tag.putInt("Tank_Y", pos.getY());
-            tag.putInt("Tank_Z", pos.getZ());
+        LinkingBehvioursInerface behaviour = getSession(player);
 
-            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-
-            player.sendSystemMessage(Component.literal("Selected a Fluid Tank"));
+        if (behaviour == null) {
+            player.sendSystemMessage(Component.literal("no linking behaviour selected"));
             return InteractionResult.SUCCESS;
         }
-        else if (blockEntity != null) {
-            player.sendSystemMessage(Component.literal("this block is not linkable"));
-        }
 
-        // 3. Select Engine & Link
-        if (blockEntity instanceof FourLineEngineBlockEntity engineBlockEntity) {
-            CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
-
-            if (customData != null && customData.contains("Wheel_X")) {
-                CompoundTag tag = customData.copyTag();
-                BlockPos wheelPos = new BlockPos(tag.getInt("Wheel_X"), tag.getInt("Wheel_Y"), tag.getInt("Wheel_Z"));
-                BlockEntity savedEntity = level.getBlockEntity(wheelPos);
-
-                if (savedEntity instanceof SteeringWheelBlockEntity steeringWheelBlockEntity) {
-                    player.sendSystemMessage(Component.literal("Selected an engine"));
-                    LinkEngine(steeringWheelBlockEntity, engineBlockEntity, player, stack);
-                } else {
-                    player.sendSystemMessage(Component.literal("Saved steering wheel is missing!"));
-                    resetTool(stack, player);
-                }
-            }
-            else if (customData != null && customData.contains("Tank_X"))
-            {
-                CompoundTag tag = customData.copyTag();
-                BlockPos tankPos = new BlockPos(tag.getInt("Tank_X"), tag.getInt("Tank_Y"), tag.getInt("Tank_Z"));
-                BlockEntity savedEntity = level.getBlockEntity(tankPos);
-
-                if (savedEntity instanceof FluidTankBlockEntity FluidTankBlockEntity) {
-                    player.sendSystemMessage(Component.literal("Selected an engine"));
-                    LinkGasTank(FluidTankBlockEntity, engineBlockEntity, player, stack);
-                } else {
-                    player.sendSystemMessage(Component.literal("Saved gas tank is missing!"));
-                    resetTool(stack, player);
-                }
-            }
-            else {
-                player.sendSystemMessage(Component.literal("no component to link with this engine"));
+        if (!behaviour.checkFirst()) {
+            behaviour.SelectFirst(pos, level);
+            if (behaviour.checkFirst()) {
+                player.sendSystemMessage(Component.literal("First block selected"));
+            } else {
+                player.sendSystemMessage(Component.literal("This block can't be used as the first link target"));
             }
             return InteractionResult.SUCCESS;
         }
 
-        return InteractionResult.PASS;
+        if (!behaviour.checkSecond()) {
+            behaviour.SelectSecond(pos, level);
+            if (behaviour.checkSecond()) {
+                behaviour.link(level);
+                player.sendSystemMessage(Component.literal("Linked!"));
+                sessions.remove(player.getUUID());
+            } else {
+                player.sendSystemMessage(Component.literal("This block can't be used as the second link target"));
+            }
+        }
+
+        return InteractionResult.SUCCESS;
     }
 
-    // Triggered when clicking the AIR
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Shift-Right-Click in the air to reset
-        if (!level.isClientSide() && player.isShiftKeyDown()) {
-            resetTool(stack, player);
+        if (!level.isClientSide()) {
+            if (player.isShiftKeyDown()) {
+                resetTool(stack, player);
+            } else {
+                // Right-clicking air - treat this as the "cycle behaviour" gesture too
+                changeBehaviour();
+                player.displayClientMessage(Component.literal("Linking behaviour: " + linkingBehaviour.getDisplayName()),true);
+            }
             return InteractionResultHolder.success(stack);
         }
 
         return InteractionResultHolder.pass(stack);
     }
 
-    // 4. Link Logic
-    // Inside LinkerTool.java, replace LinkEngine with this:
-    private void LinkEngine(SteeringWheelBlockEntity wheel, FourLineEngineBlockEntity engine, Player player, ItemStack stack) {
-        if (engine.hasLinkedWheel()) {
-            player.sendSystemMessage(Component.literal("engine already linked!"));
-            return;
-        } else {
-            wheel.linkEngine(engine.getBlockPos(), player);
-            player.sendSystemMessage(Component.literal("Successfully linked engine to steering wheel!"));
-            // Automatically reset after linking
-            resetTool(stack, null);
-        }
+    /**
+     * Cycles the tool to the next linking behaviour and clears everyone's
+     * in-progress sessions, since a half-finished selection made under the
+     * old behaviour doesn't make sense under the new one.
+     */
+    void changeBehaviour() {
+        LinkingBehaviours[] values = LinkingBehaviours.values();
+        int next = (linkingBehaviour.ordinal() + 1) % values.length;
+        linkingBehaviour = values[next];
+        sessions.clear();
     }
 
-    private void LinkGasTank(FluidTankBlockEntity gastank, FourLineEngineBlockEntity engine, Player player, ItemStack stack)
-    {
-        if (engine.hasLinkedTank()) {
-            player.sendSystemMessage(Component.literal("engine already have a linked fluid tank!"));
-            return;
-        } else {
-            engine.linkTank(gastank.getBlockPos());
-            player.sendSystemMessage(Component.literal("Successfully linked fluid tank to engine!"));
-            // Automatically reset after linking
-            resetTool(stack, null);
-        }
-    }
-
-    // 5. Reset Logic (Clears the Components)
     private void resetTool(ItemStack stack, Player player) {
-        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        sessions.remove(player.getUUID());
+        player.displayClientMessage(Component.literal("Linker tool reset"),true);
+    }
 
-        if (customData != null && customData.contains("Wheel_X")) {
-            CompoundTag tag = customData.copyTag();
-            tag.remove("Wheel_X");
-            tag.remove("Wheel_Y");
-            tag.remove("Wheel_Z");
-
-            // If the tag is empty after we remove our stuff, just delete the component entirely
-            if (tag.isEmpty()) {
-                stack.remove(DataComponents.CUSTOM_DATA);
-            } else {
-                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-            }
-
-            if (player != null) {
-                player.sendSystemMessage(Component.literal("Linker Tool reset."));
-            }
-        } else if (player != null) {
-            player.sendSystemMessage(Component.literal("Linker Tool is already empty."));
-        }
+    /**
+     * Gets this player's in-progress behaviour instance, creating a fresh one
+     * from the currently selected LinkingBehaviours enum entry if they don't
+     * have one yet.
+     */
+    private LinkingBehvioursInerface getSession(Player player) {
+        return sessions.computeIfAbsent(player.getUUID(), id -> linkingBehaviour.create());
     }
 }

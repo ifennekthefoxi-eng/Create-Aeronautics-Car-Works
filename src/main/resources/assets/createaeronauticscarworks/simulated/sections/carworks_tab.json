@@ -1,0 +1,11 @@
+{
+  "priority": 200000,
+  "title": {
+    "text": { "translate": "simulated.simulated_section.carworks_tab" },
+    "background": "#aa000000",
+    "color": "#ffffffff",
+    "secondary_color": "#ffcfd8dc"
+  },
+  "sprite": "createaeronauticscarworks:cacw_banner",
+  "only_animate_on_hover": true
+}
