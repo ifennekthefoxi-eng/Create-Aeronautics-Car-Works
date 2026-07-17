@@ -18,6 +18,7 @@ import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.config.ModConfig;
 
 import static com.fennek.carworks.CreateAeronauticsCarWorks.ID;
 
@@ -25,7 +26,7 @@ import static com.fennek.carworks.CreateAeronauticsCarWorks.ID;
 public class CreateAeronauticsCarWorks {
 
     public static final String ID = "createaeronauticscarworks";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "0.1.0-BETA";
 
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(ID)
             .setTooltipModifierFactory(item ->
@@ -36,6 +37,7 @@ public class CreateAeronauticsCarWorks {
         REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
         REGISTRATE.registerEventListeners(modEventBus);
 
+
         CACWLangRegister.registerLang();
         CACWBocks.register();
         CACWBlockEntityTypes.register();
@@ -43,6 +45,7 @@ public class CreateAeronauticsCarWorks {
         CACWSoundEvents.register(modEventBus);
         CACWMenuTypes.register();
         CACWPackets.register();
+        CACWCreativeTab.registerAeronauticsSections();
 
         if (ModList.get().isLoaded("moonlight"))
             EveryCompatCompat.init();

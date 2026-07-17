@@ -50,7 +50,10 @@ public class CACWclientEvents {
         event.register(CACWControls.Steer_Left);
         event.register(CACWControls.Steer_Right);
         event.register(CACWControls.Ignition);
-        event.register(CACWControls.CUSTOM_SHIFT);
+        event.register(CACWControls.HandBrake);
+        event.register(CACWControls.GearUp);
+        event.register(CACWControls.GearDown);
+        event.register(CACWControls.Horn);
     }
 
     @SubscribeEvent

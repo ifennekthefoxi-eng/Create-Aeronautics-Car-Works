@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 @EventBusSubscriber(modid = CreateAeronauticsCarWorks.ID)
 public class CACWModEVents {
@@ -22,6 +23,12 @@ public class CACWModEVents {
         if (world.isClientSide())
             return;
         SteeringWheelServerHandler.tick(world);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        // If the server crashed while they were driving, this guarantees they are freed upon logging back in.
+        event.getEntity().getPersistentData().remove("IsUsingSteeringWheel");
     }
 
 }

@@ -4,9 +4,16 @@
   "category.carworks.controls": "sbuıpuıᗺʎǝʞ sʞɹoʍɹɐƆ",
   "item.createaeronauticscarworks.linker_tool": "ןoo⟘ ɹǝʞuıꞀ",
   "key.carworks.brake": "ǝʞɐɹᗺ",
+  "key.carworks.gear_down": "uʍoᗡ ɹɐ⅁",
+  "key.carworks.gear_up": "d∩ ɹɐǝ⅁",
+  "key.carworks.handbrake": "ǝʞɐɹᗺ puɐH",
+  "key.carworks.horn": "uɹoH",
   "key.carworks.ignition": "uoıʇıubI",
   "key.carworks.left_turn": "ʇɟǝꞀ ɹǝǝʇS",
   "key.carworks.right_turn": "ʇɥbıᴚ ɹǝǝʇS",
-  "key.carworks.shift": "ǝʞɐɹqpuɐH",
-  "key.carworks.throttle": "ǝןʇʇoɹɥ⟘"
+  "key.carworks.throttle": "ǝןʇʇoɹɥ⟘",
+  "simulated.simulated_section.carworks_tab": "sʞɹoʍɹɐɔ",
+  "tooltip.carworks.four_line_engine": "ǝbuɐɥɔ ʎɐɯ ǝuıbuƎ ǝuıꞀ ɹnoℲ Ɐ⟘Ǝᗺ NO SI MƆⱯƆ",
+  "tooltip.carworks.linker_tool": "ǝbuɐɥɔ ʎɐɯ ןoo⟘ ɹǝʞuıꞀ Ɐ⟘Ǝᗺ NO SI MƆⱯƆ",
+  "tooltip.carworks.steering_wheel": "ǝbuɐɥɔ ʎɐɯ ןǝǝɥM buıɹǝǝʇS Ɐ⟘Ǝᗺ NO SI MƆⱯƆ"
 }

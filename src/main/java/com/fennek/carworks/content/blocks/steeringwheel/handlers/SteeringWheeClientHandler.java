@@ -152,6 +152,8 @@ public class SteeringWheeClientHandler {
             if (packetCooldown == 0 && !pressedKeys.isEmpty()) {
                 Collection<Integer> resendKeys = new HashSet<>(pressedKeys);
                 resendKeys.remove(CACWControls.getControls().indexOf(CACWControls.Ignition));
+                resendKeys.remove(CACWControls.getControls().indexOf(CACWControls.GearUp));   // adjust to your actual field name
+                resendKeys.remove(CACWControls.getControls().indexOf(CACWControls.GearDown)); // adjust to your actual field name
                 if (!resendKeys.isEmpty()) {
                     CatnipServices.NETWORK.sendToServer(new SteeringWheelInputPacket(resendKeys, true, steeringWheelPos));
                     packetCooldown = PACKET_RATE;
